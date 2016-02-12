@@ -1,0 +1,33 @@
+%% Problem 1
+% Collaborated with Lauren Saunders
+
+NMfull=readtable('Neonatal_Mortality.xlsx', 'ReadVariableNames', true,...
+    'ReadRowNames', true);
+    
+NMnew=NMfull(1:225,:);
+
+%%
+% There are 194 countries in this spreadsheet, and 225 evaluated regions.
+% The units are deaths per 1000 lives.
+
+NMdata=NMnew(:,53:end);
+units=transpose(table2cell(NMnew(:,52)));
+
+NMdata.Properties.VariableUnits=units(1,1:26);
+
+%% Problem 2 
+% Consulted with Cooper on how to get the years into number format
+fields = fieldnames(NMnew); 
+yearfields = find(strncmp(fields, 'x', 1));
+years = zeros(size(yearfields));
+
+for i = 1:numel(years),
+    varname = fields{yearfields(i)};
+    years(i) = str2double(varname(2:5));
+end;
+fieldnames(NMnew)=years
+NMdata_CA=table2cell(NMdata(:,:))
+
+NMdatanum=str2num(NMdata_CA(1,:))
+NMdatamatrix=NMdata_CA{:,:}
+
