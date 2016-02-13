@@ -1,5 +1,6 @@
 %% Homework 5 - Lauren Saunders & Meredith Bache-Wiig
-
+close all
+clear all
 %% Problem 1
 
 % a
@@ -45,18 +46,75 @@ NM_2015 = NMdatanum(:,years==2015);
 NM_1990 = NMdatanum(:,years==1990);
 
 figure;
-histogram(NM_2015);
+histogram(NM_2015, 25);
 hold on;
-histogram(NM_1990);
-ylabel('Neonatal Deaths (per 1000 live births)');
-xlabel('Neonatal Deaths accross Countries');
+histogram(NM_1990, 40);
+title('Global Neonatal Mortality in 1990 and 2015')
+ylabel('Number of Countries');
+xlabel('Neonatal Deaths (per 1000 live births)');
+legend('2015', '1990');
 
 %% Problem 3
 
 % make column vector for countries (country short names)
+countries=NMnew{:,4};
+
 % find malawi row, use that row # to pull numbers from NMDatanum
-% plot histogram of that vector
+
+malawi=NMdatanum(strcmp(countries, 'Malawi')==1,:);
+
+% plot malawi data
+figure;
+plot(years, malawi, 'o');
+title('Malawi Neonatal Mortality 1990-2015');
+ylabel('Neonatal Deaths (per 1000 live births)');
+xlabel('Year');
 
 %% Problem 4
+% make a cell array of income level
+income=NMnew{:,10};
 
+% make a mid category
+mid=zeros(size(income));
+for i=1:numel(income);
+    if strncmp('Upper middle',income(i), 7)==1;
+    mid(i)=1;
+    elseif strncmp('Lower middle',income(i), 7)==1;
+        mid(i)= 1;
+    end;
+end;
 
+%strcmp to find low mid and high 
+highincome=NMdatanum(strncmp('High income',income, 7)==1,:);
+midincome=NMdatanum(mid==1,:);
+lowincome=NMdatanum(strncmp('Low income',income, 7)==1,:);
+
+%find means for each year, generate matrices
+highmean=zeros(1,numel(years));
+for i=1:numel(years);
+    highmean(i)=mean(highincome(:,i));
+end;
+
+midmean=zeros(1,numel(years));
+for i=1:numel(years);
+    midmean(i)=mean(midincome(:,i));
+end;
+
+lowmean=zeros(1,numel(years));
+for i=1:numel(years);
+    lowmean(i)=mean(lowincome(:,i));
+end;
+
+%Plot means
+figure;
+plot(years, highmean, 'o');
+hold on
+plot(years, midmean, 'o');
+hold on
+plot(years, lowmean, 'o');
+title('Income Level Neonatal Mortality 1990-2015');
+ylabel('Mean Neonatal Mortality');
+xlabel('Year');
+legend('High Income', 'Mid Income', 'Low Income');
+
+%% Problem 5
