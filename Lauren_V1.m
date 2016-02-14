@@ -117,4 +117,6 @@ ylabel('Mean Neonatal Mortality');
 xlabel('Year');
 legend('High Income', 'Mid Income', 'Low Income');
 
-%% Problem 5
+%% Problem 6
+
+% We spent 5 hours on this homework.
